@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		121DE10C1F70EC0700CA4496 /* QueueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121DE10B1F70EC0700CA4496 /* QueueEntry.swift */; };
-		124E48A91F70DEEA0013EFC5 /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */; };
+		121DE10C1F70EC0700CA4496 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121DE10B1F70EC0700CA4496 /* Queue.swift */; };
+		124E48A91F70DEEA0013EFC5 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124E48A81F70DEEA0013EFC5 /* History.swift */; };
 		12A48A341F70A26000C068A0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A2F1F70A26000C068A0 /* SQLite.framework */; };
 		12A48A351F70A26000C068A0 /* MIVRKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A301F70A26000C068A0 /* MIVRKit.framework */; };
 		12A48A361F70A26000C068A0 /* Hydra.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A311F70A26000C068A0 /* Hydra.framework */; };
@@ -20,8 +20,8 @@
 		12A48A411F70A27000C068A0 /* KZSimpleLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A3C1F70A26F00C068A0 /* KZSimpleLogger.framework */; };
 		12A48A421F70A27000C068A0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A3D1F70A27000C068A0 /* SQLite.framework */; };
 		12A48A451F70A29600C068A0 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A441F70A29600C068A0 /* DataStore.swift */; };
-		12A48A471F70A2D100C068A0 /* GuideEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A461F70A2D100C068A0 /* GuideEntry.swift */; };
-		12A48A481F70A35600C068A0 /* GuideEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A461F70A2D100C068A0 /* GuideEntry.swift */; };
+		12A48A471F70A2D100C068A0 /* Guide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A461F70A2D100C068A0 /* Guide.swift */; };
+		12A48A481F70A35600C068A0 /* Guide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A461F70A2D100C068A0 /* Guide.swift */; };
 		12A48A4C1F70AECD00C068A0 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A441F70A29600C068A0 /* DataStore.swift */; };
 		12A48A501F70AF9700C068A0 /* TestDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */; };
 		12A48A6B1F70B7A200C068A0 /* TestDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */; };
@@ -51,8 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		121DE10B1F70EC0700CA4496 /* QueueEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueEntry.swift; sourceTree = "<group>"; };
-		124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
+		121DE10B1F70EC0700CA4496 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		124E48A81F70DEEA0013EFC5 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		12A48A2F1F70A26000C068A0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/Mac/SQLite.framework; sourceTree = "<group>"; };
 		12A48A301F70A26000C068A0 /* MIVRKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIVRKit.framework; path = Carthage/Build/Mac/MIVRKit.framework; sourceTree = "<group>"; };
 		12A48A311F70A26000C068A0 /* Hydra.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hydra.framework; path = Carthage/Build/Mac/Hydra.framework; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		12A48A3C1F70A26F00C068A0 /* KZSimpleLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KZSimpleLogger.framework; path = Carthage/Build/iOS/KZSimpleLogger.framework; sourceTree = "<group>"; };
 		12A48A3D1F70A27000C068A0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		12A48A441F70A29600C068A0 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
-		12A48A461F70A2D100C068A0 /* GuideEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideEntry.swift; sourceTree = "<group>"; };
+		12A48A461F70A2D100C068A0 /* Guide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guide.swift; sourceTree = "<group>"; };
 		12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataStore.swift; sourceTree = "<group>"; };
 		52D6D97C1BEFF229002C0205 /* SQLiteMIVRKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLiteMIVRKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9861BEFF229002C0205 /* SQLiteMIVRKit-iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SQLiteMIVRKit-iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,18 +141,11 @@
 			isa = PBXGroup;
 			children = (
 				12A48A441F70A29600C068A0 /* DataStore.swift */,
-				12A48A461F70A2D100C068A0 /* GuideEntry.swift */,
-				124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */,
-				121DE10B1F70EC0700CA4496 /* QueueEntry.swift */,
+				12A48A461F70A2D100C068A0 /* Guide.swift */,
+				124E48A81F70DEEA0013EFC5 /* History.swift */,
+				121DE10B1F70EC0700CA4496 /* Queue.swift */,
 			);
 			path = core;
-			sourceTree = "<group>";
-		};
-		12A48A491F70ABE200C068A0 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		52D6D9721BEFF229002C0205 = {
@@ -189,7 +182,6 @@
 		8933C7811EB5B7E0000D00A4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				12A48A491F70ABE200C068A0 /* Extensions */,
 				12A48A431F70A28600C068A0 /* core */,
 				8933C7841EB5B820000D00A4 /* SQLiteMIVRKit.swift */,
 			);
@@ -407,7 +399,7 @@
 			files = (
 				8933C7851EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */,
 				12A48A4C1F70AECD00C068A0 /* DataStore.swift in Sources */,
-				12A48A481F70A35600C068A0 /* GuideEntry.swift in Sources */,
+				12A48A481F70A35600C068A0 /* Guide.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,10 +416,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12A48A471F70A2D100C068A0 /* GuideEntry.swift in Sources */,
-				124E48A91F70DEEA0013EFC5 /* HistoryEntry.swift in Sources */,
+				12A48A471F70A2D100C068A0 /* Guide.swift in Sources */,
+				124E48A91F70DEEA0013EFC5 /* History.swift in Sources */,
 				8933C7861EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */,
-				121DE10C1F70EC0700CA4496 /* QueueEntry.swift in Sources */,
+				121DE10C1F70EC0700CA4496 /* Queue.swift in Sources */,
 				12A48A451F70A29600C068A0 /* DataStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
