@@ -17,12 +17,17 @@ public enum SQLDataStoreError: Error {
 	case couldNotFindHistoryAfterInsert
 	case invalidRowID
 	case invalidGuideType(value: Int)
+	case invalidQueueStatus(value: Int)
 	case couldNotDeleteGuide(element: GuideEntry)
 	case couldNotDeleteHistory(element: HistoryEntry)
+	case couldNotDeleteQueueEntry(element: QueueEntry)
 	case invalidGuideImplementation(element: GuideEntry)
 	case invalidHistoryImplementation(element: HistoryEntry)
+	case invalidQueueImplementation(element: QueueEntry)
 	case couldNotUpdateGuide(element: GuideEntry)
 	case couldNotUpdateHistory(element: HistoryEntry)
+	case couldNotUpdateQueueEntry(element: QueueEntry)
+	case couldNotFindQueueEntryAfterInsert
 }
 
 public class SQLDataStore: DefaultDataStore {
@@ -32,6 +37,7 @@ public class SQLDataStore: DefaultDataStore {
 
 	let guideTable: GuideTable = GuideTable()
 	let historyTable: HistoryTable = HistoryTable()
+	let queueTable: QueueTable = QueueTable()
 	
 	var databasePath: URL? {
 		var searchPath: FileManager.SearchPathDirectory = .documentDirectory
@@ -81,6 +87,7 @@ public class SQLDataStore: DefaultDataStore {
 	func createTables() throws {
 		try createGuideEntriesTable()
 		try createHistoryEntriesTable()
+		try createQueueEntriesTable()
 	}
 	
 	func createGuideEntriesTable() throws {
@@ -91,6 +98,11 @@ public class SQLDataStore: DefaultDataStore {
 	func createHistoryEntriesTable() throws {
 		let connection = try self.connection()
 		try historyTable.create(using: connection)
+	}
+
+	func createQueueEntriesTable() throws {
+		let connection = try self.connection()
+		try queueTable.create(using: connection)
 	}
 
 	// MARK: Guide Entries
@@ -129,5 +141,24 @@ public class SQLDataStore: DefaultDataStore {
 	
 	public override func update(_ entries: [HistoryEntry]) throws {
 		try historyTable.update(using: try connection(), entries: entries)
+	}
+	
+	// MARK: Queue Entries
+
+	public override func queue() throws -> [QueueEntry] {
+		return try queueTable.select(using: try connection())
+	}
+
+	public override func addToQueue(guid: String, id: String, name: String, status: QueueEntryStatus, score: Int) throws -> QueueEntry {
+		let db = try connection()
+		return try queueTable.insert(guid: guid, id: id, name: name, status: status, score: score, using: db)
+	}
+	
+	public override func remove(_ entries: [QueueEntry]) throws {
+		try queueTable.delete(using: try connection(), entries: entries)
+	}
+	
+	public override func update(_ entries: [QueueEntry]) throws {
+		try queueTable.update(using: try connection(), entries: entries)
 	}
 }

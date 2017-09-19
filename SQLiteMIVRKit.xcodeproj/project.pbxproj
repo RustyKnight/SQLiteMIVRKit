@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121DE10C1F70EC0700CA4496 /* QueueEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121DE10B1F70EC0700CA4496 /* QueueEntry.swift */; };
 		124E48A91F70DEEA0013EFC5 /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */; };
 		12A48A341F70A26000C068A0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A2F1F70A26000C068A0 /* SQLite.framework */; };
 		12A48A351F70A26000C068A0 /* MIVRKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A301F70A26000C068A0 /* MIVRKit.framework */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		121DE10B1F70EC0700CA4496 /* QueueEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueEntry.swift; sourceTree = "<group>"; };
 		124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntry.swift; sourceTree = "<group>"; };
 		12A48A2F1F70A26000C068A0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/Mac/SQLite.framework; sourceTree = "<group>"; };
 		12A48A301F70A26000C068A0 /* MIVRKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIVRKit.framework; path = Carthage/Build/Mac/MIVRKit.framework; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				12A48A441F70A29600C068A0 /* DataStore.swift */,
 				12A48A461F70A2D100C068A0 /* GuideEntry.swift */,
 				124E48A81F70DEEA0013EFC5 /* HistoryEntry.swift */,
+				121DE10B1F70EC0700CA4496 /* QueueEntry.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				12A48A471F70A2D100C068A0 /* GuideEntry.swift in Sources */,
 				124E48A91F70DEEA0013EFC5 /* HistoryEntry.swift in Sources */,
 				8933C7861EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */,
+				121DE10C1F70EC0700CA4496 /* QueueEntry.swift in Sources */,
 				12A48A451F70A29600C068A0 /* DataStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
