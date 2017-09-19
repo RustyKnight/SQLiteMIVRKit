@@ -130,9 +130,9 @@ public class SQLDataStore: DefaultDataStore {
 		return try historyTable.select(using: try connection())
 	}
 
-	public override func addToHistory(guid: String, ignored: Bool, score: Int) throws -> HistoryItem {
+  public override func addToHistory(groupID: String, guid: String, ignored: Bool, score: Int) throws -> HistoryItem {
 		let db = try connection()
-		return try historyTable.insert(guid: guid, ignored: ignored, score: score, using: db)
+    return try historyTable.insert(groupID: groupID, guid: guid, ignored: ignored, score: score, using: db)
 		}
 	
 	public override func remove(_ entries: [HistoryItem]) throws {
@@ -149,9 +149,9 @@ public class SQLDataStore: DefaultDataStore {
 		return try queueTable.select(using: try connection())
 	}
 
-	public override func addToQueue(guid: String, id: String, name: String, status: QueueItemStatus, score: Int) throws -> QueueItem {
+  public override func addToQueue(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String) throws -> QueueItem {
 		let db = try connection()
-		return try queueTable.insert(guid: guid, id: id, name: name, status: status, score: score, using: db)
+    return try queueTable.insert(guid: guid, id: id, name: name, status: status, score: score, link: link, using: db)
 	}
 	
 	public override func remove(_ entries: [QueueItem]) throws {

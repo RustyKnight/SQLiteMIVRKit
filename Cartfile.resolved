@@ -1,5 +1,5 @@
-git "https://RustyKnight@bitbucket.org/RustyKnight/nzbkit.git" "v0.1.17"
+git "https://RustyKnight@bitbucket.org/RustyKnight/nzbkit.git" "f18a664d057ee4400da4f8fbd8dc9a42796bec46"
 github "RustyKnight/Hydra" "v1.6.0"
-github "RustyKnight/MIVRKit" "5a505736c4fe351e4e6688958041d2c906ecce14"
+github "RustyKnight/MIVRKit" "cb963d751e479fd06a3a42dbc0a1ba0dd9c0f3a1"
 github "RustyKnight/SimpleLogger" "v0.0.5"
 github "stephencelis/SQLite.swift" "0.11.3"

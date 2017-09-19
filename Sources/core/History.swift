@@ -16,6 +16,7 @@ class HistoryTable {
 	let table = Table("HistoryEntries")
 	
 	let keyColumn = Expression<Int64>("key")
+  let groupIDColumn = Expression<String>("groupID")
 	let guidColumn = Expression<String>("guid")
 	let ignoredColumn = Expression<Bool>("isgnored")
 	let scoreColumn = Expression<Int>("score")
@@ -26,17 +27,19 @@ class HistoryTable {
 			table.column(guidColumn, unique: true)
 			table.column(ignoredColumn)
 			table.column(scoreColumn)
+      table.column(groupIDColumn)
 		})
 	}
 	
-	public func insert(guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryItem {
+  public func insert(groupID: String, guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert history entry")
 			rowID = try db.run(self.table.insert(
 				self.guidColumn <- guid,
 				self.ignoredColumn <- ignored,
-				self.scoreColumn <- score))
+				self.scoreColumn <- score,
+        self.groupIDColumn <- groupID))
 			log(debug: "Inserted with \(String(describing: rowID))")
 		}
 		guard let id = rowID else {
@@ -74,6 +77,7 @@ class HistoryTable {
 			entries.append(
 				SQLHistoryItem(
 					key: entry[keyColumn],
+          groupID: entry[groupIDColumn],
 					guid: entry[guidColumn],
 					ignored: entry[ignoredColumn],
 					score: entry[scoreColumn])
@@ -101,7 +105,8 @@ class HistoryTable {
 				let parameters = [
 					self.ignoredColumn <- entry.isIgnored,
 					self.guidColumn <- entry.guid,
-					self.scoreColumn <- entry.score
+					self.scoreColumn <- entry.score,
+          self.groupIDColumn <- entry.groupID
 				]
 				guard try db.run(filter.update(parameters)) == 0 else {
 					continue
@@ -114,14 +119,17 @@ class HistoryTable {
 }
 
 public class SQLHistoryItem: HistoryItem {
+  
 	
 	var key: Int64
+  public var groupID: String
 	public var guid: String
 	public var isIgnored: Bool
 	public var score: Int
 	
-	init(key: Int64, guid: String, ignored: Bool, score: Int) {
+  init(key: Int64, groupID: String, guid: String, ignored: Bool, score: Int) {
 		self.key = key
+    self.groupID = groupID
 		self.guid = guid
 		self.isIgnored = ignored
 		self.score = score

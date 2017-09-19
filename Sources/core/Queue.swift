@@ -21,7 +21,8 @@ class QueueTable {
 	let nameColumn = Expression<String>("name")
 	let statusColumn = Expression<Int>("status")
 	let scoreColumn = Expression<Int>("score")
-	
+  let linkColumn = Expression<String>("link")
+
 	func create(using connection: Connection) throws {
 		try connection.run(table.create(ifNotExists: true) { (table) in
 			table.column(keyColumn, primaryKey: .autoincrement)
@@ -30,19 +31,25 @@ class QueueTable {
 			table.column(nameColumn)
 			table.column(statusColumn)
 			table.column(scoreColumn)
+      table.column(linkColumn)
 		})
 	}
 	
-	public func insert(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, using db: Connection) throws -> QueueItem {
+  public func insert(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String, using db: Connection) throws -> QueueItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert queue entry")
-			rowID = try db.run(self.table.insert(
-				self.guidColumn <- guid,
-				self.idColumn <- id,
-				self.nameColumn <- name,
-				self.statusColumn <- status.rawValue,
-				self.scoreColumn <- score))
+      
+      let parameters = [
+        self.guidColumn <- guid,
+        self.idColumn <- id,
+        self.nameColumn <- name,
+        self.statusColumn <- status.rawValue,
+        self.scoreColumn <- score,
+        self.linkColumn <- link
+      ]
+      
+			rowID = try db.run(self.table.insert(parameters))
 			log(debug: "Inserted with \(String(describing: rowID))")
 		}
 		guard let id = rowID else {
@@ -88,7 +95,8 @@ class QueueTable {
 					id: entry[idColumn],
 					name: entry[nameColumn],
 					status: status,
-					score: entry[scoreColumn])
+					score: entry[scoreColumn],
+          link: entry[linkColumn])
 			)
 		}
 		return entries
@@ -115,7 +123,8 @@ class QueueTable {
 					self.idColumn <- entry.id,
 					self.nameColumn <- entry.name,
 					self.statusColumn <- entry.status.rawValue,
-					self.scoreColumn <- entry.score
+					self.scoreColumn <- entry.score,
+          self.linkColumn <- entry.link
 				]
 				guard try db.run(filter.update(parameters)) == 0 else {
 					continue
@@ -128,21 +137,23 @@ class QueueTable {
 }
 
 public class SQLQueueItem: QueueItem {
-	
-	var key: Int64
+
+  var key: Int64
 	public var guid: String
 	public var id: String
 	public var name: String
 	public var status: QueueItemStatus
 	public var score: Int
-	
-	init(key: Int64, guid: String, id: String, name: String, status: QueueItemStatus, score: Int) {
+  public var link: String
+
+  init(key: Int64, guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String) {
 		self.key = key
 		self.guid = guid
 		self.id = id
 		self.name = name
 		self.status = status
 		self.score = score
+    self.link = link
 	}
 	
 }
