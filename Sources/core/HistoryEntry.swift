@@ -1,5 +1,5 @@
 //
-//  HistoryEntry.swift
+//  HistoryItem.swift
 //  SQLiteMIVRKit-macOS
 //
 //  Created by Shane Whitehead on 19/9/17.
@@ -29,7 +29,7 @@ class HistoryTable {
 		})
 	}
 	
-	public func insert(guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryEntry {
+	public func insert(guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert history entry")
@@ -49,14 +49,14 @@ class HistoryTable {
 		return value
 	}
 	
-	public func delete(using db: Connection, entries: HistoryEntry...) throws {
+	public func delete(using db: Connection, entries: HistoryItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 	
-	public func delete(using db: Connection, entries: [HistoryEntry]) throws {
+	public func delete(using db: Connection, entries: [HistoryItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let guide = entry as? SQLHistoryEntry else {
+				guard let guide = entry as? SQLHistoryItem else {
 					throw SQLDataStoreError.invalidHistoryImplementation(element: entry)
 				}
 				let filter = self.table.filter(self.keyColumn == guide.key)
@@ -68,11 +68,11 @@ class HistoryTable {
 		}
 	}
 	
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [HistoryEntry] {
-		var entries: [HistoryEntry] = []
+	public func select(using db: Connection, filteredUsing filter: Table) throws -> [HistoryItem] {
+		var entries: [HistoryItem] = []
 		for entry in try db.prepare(filter) {
 			entries.append(
-				SQLHistoryEntry(
+				SQLHistoryItem(
 					key: entry[keyColumn],
 					guid: entry[guidColumn],
 					ignored: entry[ignoredColumn],
@@ -82,18 +82,18 @@ class HistoryTable {
 		return entries
 	}
 	
-	public func select(using db: Connection) throws -> [HistoryEntry] {
+	public func select(using db: Connection) throws -> [HistoryItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 	
-	public func update(using db: Connection, entries: HistoryEntry...) throws {
+	public func update(using db: Connection, entries: HistoryItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [HistoryEntry]) throws {
+	public func update(using db: Connection, entries: [HistoryItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let mutabled = entry as? SQLHistoryEntry else {
+				guard let mutabled = entry as? SQLHistoryItem else {
 					throw SQLDataStoreError.invalidHistoryImplementation(element: entry)
 				}
 				log(debug: "Updating history entry with key \(mutabled.key)")
@@ -113,7 +113,7 @@ class HistoryTable {
 	
 }
 
-public class SQLHistoryEntry: HistoryEntry {
+public class SQLHistoryItem: HistoryItem {
 	
 	var key: Int64
 	public var guid: String

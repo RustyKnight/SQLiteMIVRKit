@@ -56,7 +56,7 @@ class TestDataStore: XCTestCase {
 			var guide = try dataStore.addToGuide(named: "Guide Test", id: "1234", type: .tvSeries, lastGrab: nil)
 			assert(guide.id == "1234", "Invalid guide id, expecting 1234, got \(guide.id)")
 			assert(guide.name == "Guide Test", "Invalid guide name, expecting \"Guide Test\", got \"\(guide.name)\"")
-			assert(guide.type == .tvSeries, "Invalid guide type, expecting \(GuideEntryType.tvSeries), got \(guide.type)")
+			assert(guide.type == .tvSeries, "Invalid guide type, expecting \(GuideItemType.tvSeries), got \(guide.type)")
 			
 			guide.id = "5678"
 			guide.name = "Update"
@@ -65,7 +65,7 @@ class TestDataStore: XCTestCase {
 			try dataStore.update(guide)
 			assert(guide.id == "5678", "Invalid guide id, expecting 5678, got \(guide.id)")
 			assert(guide.name == "Update", "Invalid guide name, expecting \"Update\", got \"\(guide.name)\"")
-			assert(guide.type == .movie, "Invalid guide type, expecting \(GuideEntryType.movie), got \(guide.type)")
+			assert(guide.type == .movie, "Invalid guide type, expecting \(GuideItemType.movie), got \(guide.type)")
 
 			entries = try dataStore.guide()
 			if entries.count > 0 {
@@ -127,7 +127,7 @@ class TestDataStore: XCTestCase {
 			assert(history.guid == "1234", "Invalid guide id, expecting \"1234\", got \"\(history.guid)\"")
 			assert(history.id == "5678", "Invalid guide name, expecting \"5678\", got \"\(history.id)\"")
 			assert(history.name == "Test", "Invalid guide type, expecting \"Test\", got \"\(history.name)\"")
-			assert(history.status == .queued, "Invalid guide type, expecting \"\(QueueEntryStatus.queued)\", got \"\(history.status)\"")
+			assert(history.status == .queued, "Invalid guide type, expecting \"\(QueueItemStatus.queued)\", got \"\(history.status)\"")
 			assert(history.score == 1, "Invalid guide type, expecting 1, got \(history.score)")
 			
 			history.guid = "5678"
@@ -140,7 +140,7 @@ class TestDataStore: XCTestCase {
 			assert(history.guid == "5678", "Invalid guide id, expecting \"5678\", got \"\(history.guid)\"")
 			assert(history.id == "1234", "Invalid guide name, expecting \"1234\", got \"\(history.id)\"")
 			assert(history.name == "Testing", "Invalid guide type, expecting \"Testing\", got \"\(history.name)\"")
-			assert(history.status == .active, "Invalid guide type, expecting \"\(QueueEntryStatus.active)\", got \"\(history.status)\"")
+			assert(history.status == .active, "Invalid guide type, expecting \"\(QueueItemStatus.active)\", got \"\(history.status)\"")
 			assert(history.score == 100, "Invalid guide type, expecting 1, got \(history.score)")
 
 			entries = try dataStore.queue()

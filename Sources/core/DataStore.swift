@@ -18,16 +18,16 @@ public enum SQLDataStoreError: Error {
 	case invalidRowID
 	case invalidGuideType(value: Int)
 	case invalidQueueStatus(value: Int)
-	case couldNotDeleteGuide(element: GuideEntry)
-	case couldNotDeleteHistory(element: HistoryEntry)
-	case couldNotDeleteQueueEntry(element: QueueEntry)
-	case invalidGuideImplementation(element: GuideEntry)
-	case invalidHistoryImplementation(element: HistoryEntry)
-	case invalidQueueImplementation(element: QueueEntry)
-	case couldNotUpdateGuide(element: GuideEntry)
-	case couldNotUpdateHistory(element: HistoryEntry)
-	case couldNotUpdateQueueEntry(element: QueueEntry)
-	case couldNotFindQueueEntryAfterInsert
+	case couldNotDeleteGuide(element: GuideItem)
+	case couldNotDeleteHistory(element: HistoryItem)
+	case couldNotDeleteQueueItem(element: QueueItem)
+	case invalidGuideImplementation(element: GuideItem)
+	case invalidHistoryImplementation(element: HistoryItem)
+	case invalidQueueImplementation(element: QueueItem)
+	case couldNotUpdateGuide(element: GuideItem)
+	case couldNotUpdateHistory(element: HistoryItem)
+	case couldNotUpdateQueueItem(element: QueueItem)
+	case couldNotFindQueueItemAfterInsert
 }
 
 public class SQLDataStore: DefaultDataStore {
@@ -107,58 +107,58 @@ public class SQLDataStore: DefaultDataStore {
 
 	// MARK: Guide Entries
 	
-	public override func guide() throws -> [GuideEntry] {
+	public override func guide() throws -> [GuideItem] {
 		return try guideTable.select(using: try connection())
 	}
 	
-	public override func addToGuide(named: String, id: String, type: GuideEntryType, lastGrab: Date?) throws -> GuideEntry {
+	public override func addToGuide(named: String, id: String, type: GuideItemType, lastGrab: Date?) throws -> GuideItem {
 		let db = try connection()
 		return try guideTable.insert(name: named, id: id, type: type, lastGrab: lastGrab, using: db)
 	}
 	
-	public override func remove(_ entries: [GuideEntry]) throws {
+	public override func remove(_ entries: [GuideItem]) throws {
 		try guideTable.delete(using: try connection(), entries: entries)
 	}
 	
-	public override func update(_ entries: [GuideEntry]) throws {
+	public override func update(_ entries: [GuideItem]) throws {
 		try guideTable.update(using: try connection(), entries: entries)
 	}
 
 	// MARK: History Entries
 
-	public override func history() throws -> [HistoryEntry] {
+	public override func history() throws -> [HistoryItem] {
 		return try historyTable.select(using: try connection())
 	}
 
-	public override func addToHistory(guid: String, ignored: Bool, score: Int) throws -> HistoryEntry {
+	public override func addToHistory(guid: String, ignored: Bool, score: Int) throws -> HistoryItem {
 		let db = try connection()
 		return try historyTable.insert(guid: guid, ignored: ignored, score: score, using: db)
 		}
 	
-	public override func remove(_ entries: [HistoryEntry]) throws {
+	public override func remove(_ entries: [HistoryItem]) throws {
 		try historyTable.delete(using: try connection(), entries: entries)
 	}
 	
-	public override func update(_ entries: [HistoryEntry]) throws {
+	public override func update(_ entries: [HistoryItem]) throws {
 		try historyTable.update(using: try connection(), entries: entries)
 	}
 	
 	// MARK: Queue Entries
 
-	public override func queue() throws -> [QueueEntry] {
+	public override func queue() throws -> [QueueItem] {
 		return try queueTable.select(using: try connection())
 	}
 
-	public override func addToQueue(guid: String, id: String, name: String, status: QueueEntryStatus, score: Int) throws -> QueueEntry {
+	public override func addToQueue(guid: String, id: String, name: String, status: QueueItemStatus, score: Int) throws -> QueueItem {
 		let db = try connection()
 		return try queueTable.insert(guid: guid, id: id, name: name, status: status, score: score, using: db)
 	}
 	
-	public override func remove(_ entries: [QueueEntry]) throws {
+	public override func remove(_ entries: [QueueItem]) throws {
 		try queueTable.delete(using: try connection(), entries: entries)
 	}
 	
-	public override func update(_ entries: [QueueEntry]) throws {
+	public override func update(_ entries: [QueueItem]) throws {
 		try queueTable.update(using: try connection(), entries: entries)
 	}
 }

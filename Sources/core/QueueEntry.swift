@@ -1,5 +1,5 @@
 //
-//  QueueEntry.swift
+//  QueueItem.swift
 //  SQLiteMIVRKit-macOS
 //
 //  Created by Shane Whitehead on 19/9/17.
@@ -33,7 +33,7 @@ class QueueTable {
 		})
 	}
 	
-	public func insert(guid: String, id: String, name: String, status: QueueEntryStatus, score: Int, using db: Connection) throws -> QueueEntry {
+	public func insert(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, using db: Connection) throws -> QueueItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert queue entry")
@@ -50,39 +50,39 @@ class QueueTable {
 		}
 		let filter = self.table.filter(self.keyColumn == id)
 		guard let value = try select(using: db, filteredUsing: filter).first else {
-			throw SQLDataStoreError.couldNotFindQueueEntryAfterInsert
+			throw SQLDataStoreError.couldNotFindQueueItemAfterInsert
 		}
 		return value
 	}
 	
-	public func delete(using db: Connection, entries: QueueEntry...) throws {
+	public func delete(using db: Connection, entries: QueueItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 	
-	public func delete(using db: Connection, entries: [QueueEntry]) throws {
+	public func delete(using db: Connection, entries: [QueueItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let guide = entry as? SQLQueueEntry else {
+				guard let guide = entry as? SQLQueueItem else {
 					throw SQLDataStoreError.invalidQueueImplementation(element: entry)
 				}
 				let filter = self.table.filter(self.keyColumn == guide.key)
 				guard try db.run(filter.delete()) == 0 else {
 					continue
 				}
-				throw SQLDataStoreError.couldNotDeleteQueueEntry(element: guide)
+				throw SQLDataStoreError.couldNotDeleteQueueItem(element: guide)
 			}
 		}
 	}
 	
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [QueueEntry] {
-		var entries: [QueueEntry] = []
+	public func select(using db: Connection, filteredUsing filter: Table) throws -> [QueueItem] {
+		var entries: [QueueItem] = []
 		for entry in try db.prepare(filter) {
 			let statusValue = entry[statusColumn]
-			guard let status = QueueEntryStatus(rawValue: statusValue) else {
+			guard let status = QueueItemStatus(rawValue: statusValue) else {
 				throw SQLDataStoreError.invalidQueueStatus(value: statusValue)
 			}
 			entries.append(
-				SQLQueueEntry(
+				SQLQueueItem(
 					key: entry[keyColumn],
 					guid: entry[guidColumn],
 					id: entry[idColumn],
@@ -94,18 +94,18 @@ class QueueTable {
 		return entries
 	}
 	
-	public func select(using db: Connection) throws -> [QueueEntry] {
+	public func select(using db: Connection) throws -> [QueueItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 	
-	public func update(using db: Connection, entries: QueueEntry...) throws {
+	public func update(using db: Connection, entries: QueueItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [QueueEntry]) throws {
+	public func update(using db: Connection, entries: [QueueItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let mutabled = entry as? SQLQueueEntry else {
+				guard let mutabled = entry as? SQLQueueItem else {
 					throw SQLDataStoreError.invalidQueueImplementation(element: entry)
 				}
 				log(debug: "Updating queue entry with key \(mutabled.key)")
@@ -120,23 +120,23 @@ class QueueTable {
 				guard try db.run(filter.update(parameters)) == 0 else {
 					continue
 				}
-				throw SQLDataStoreError.couldNotUpdateQueueEntry(element: entry)
+				throw SQLDataStoreError.couldNotUpdateQueueItem(element: entry)
 			}
 		}
 	}
 	
 }
 
-public class SQLQueueEntry: QueueEntry {
+public class SQLQueueItem: QueueItem {
 	
 	var key: Int64
 	public var guid: String
 	public var id: String
 	public var name: String
-	public var status: QueueEntryStatus
+	public var status: QueueItemStatus
 	public var score: Int
 	
-	init(key: Int64, guid: String, id: String, name: String, status: QueueEntryStatus, score: Int) {
+	init(key: Int64, guid: String, id: String, name: String, status: QueueItemStatus, score: Int) {
 		self.key = key
 		self.guid = guid
 		self.id = id

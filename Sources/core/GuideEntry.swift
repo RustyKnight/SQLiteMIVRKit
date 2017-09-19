@@ -1,5 +1,5 @@
 //
-//  GuideEntry.swift
+//  GuideItem.swift
 //  SQLiteMIVRKit-macOS
 //
 //  Created by Shane Whitehead on 19/9/17.
@@ -31,7 +31,7 @@ class GuideTable {
 		})
 	}
 
-	public func insert(name: String, id: String, type: GuideEntryType, lastGrab: Date? = nil, using db: Connection) throws -> GuideEntry {
+	public func insert(name: String, id: String, type: GuideItemType, lastGrab: Date? = nil, using db: Connection) throws -> GuideItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert guide entry")
@@ -56,14 +56,14 @@ class GuideTable {
 		return value
 	}
 
-	public func delete(using db: Connection, entries: GuideEntry...) throws {
+	public func delete(using db: Connection, entries: GuideItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 
-	public func delete(using db: Connection, entries: [GuideEntry]) throws {
+	public func delete(using db: Connection, entries: [GuideItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let guide = entry as? SQLGuideEntry else {
+				guard let guide = entry as? SQLGuideItem else {
 					throw SQLDataStoreError.invalidGuideImplementation(element: entry)
 				}
 				let filter = self.table.filter(self.keyColumn == guide.key)
@@ -75,14 +75,14 @@ class GuideTable {
 		}
 	}
 
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [GuideEntry] {
-		var entries: [GuideEntry] = []
+	public func select(using db: Connection, filteredUsing filter: Table) throws -> [GuideItem] {
+		var entries: [GuideItem] = []
 		for entry in try db.prepare(filter) {
-			guard let type = GuideEntryType(rawValue: Int(entry[typeColumn])) else {
+			guard let type = GuideItemType(rawValue: Int(entry[typeColumn])) else {
 				throw SQLDataStoreError.invalidGuideType(value: entry[typeColumn])
 			}
 			entries.append(
-				SQLGuideEntry(
+				SQLGuideItem(
 					key: entry[keyColumn],
 					name: entry[nameColumn],
 					id: entry[idColumn],
@@ -93,18 +93,18 @@ class GuideTable {
 		return entries
 	}
 
-	public func select(using db: Connection) throws -> [GuideEntry] {
+	public func select(using db: Connection) throws -> [GuideItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 
-	public func update(using db: Connection, entries: GuideEntry...) throws {
+	public func update(using db: Connection, entries: GuideItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [GuideEntry]) throws {
+	public func update(using db: Connection, entries: [GuideItem]) throws {
 		try db.transaction {
 			for entry in entries {
-				guard let mutabled = entry as? SQLGuideEntry else {
+				guard let mutabled = entry as? SQLGuideItem else {
 					throw SQLDataStoreError.invalidGuideImplementation(element: entry)
 				}
 				log(debug: "Updating guide entry with key \(mutabled.key)")
@@ -125,15 +125,15 @@ class GuideTable {
 
 }
 
-public class SQLGuideEntry: GuideEntry {
+public class SQLGuideItem: GuideItem {
 	
 	var key: Int64
 	public var name: String
 	public var id: String
-	public var type: GuideEntryType
+	public var type: GuideItemType
 	public var lastGrab: Date?
 	
-	init(key: Int64, name: String, id: String, type: GuideEntryType, lastGrab: Date? = nil) {
+	init(key: Int64, name: String, id: String, type: GuideItemType, lastGrab: Date? = nil) {
 		self.key = key
 		self.name = name
 		self.id = id
