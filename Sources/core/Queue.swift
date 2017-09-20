@@ -35,14 +35,14 @@ class QueueTable {
 		})
 	}
 	
-  public func insert(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String, using db: Connection) throws -> QueueItem {
+  public func insert(guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String, using db: Connection) throws -> QueueItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert queue entry")
       
       let parameters = [
         self.guidColumn <- guid,
-        self.idColumn <- id,
+        self.idColumn <- groupID,
         self.nameColumn <- name,
         self.statusColumn <- status.rawValue,
         self.scoreColumn <- score,
@@ -92,7 +92,7 @@ class QueueTable {
 				SQLQueueItem(
 					key: entry[keyColumn],
 					guid: entry[guidColumn],
-					id: entry[idColumn],
+					groupID: entry[idColumn],
 					name: entry[nameColumn],
 					status: status,
 					score: entry[scoreColumn],
@@ -120,7 +120,7 @@ class QueueTable {
 				let filter = self.table.filter(self.keyColumn == mutabled.key)
 				let parameters = [
 					self.guidColumn <- entry.guid,
-					self.idColumn <- entry.id,
+					self.idColumn <- entry.groupID,
 					self.nameColumn <- entry.name,
 					self.statusColumn <- entry.status.rawValue,
 					self.scoreColumn <- entry.score,
@@ -140,16 +140,16 @@ public class SQLQueueItem: QueueItem {
 
   var key: Int64
 	public var guid: String
-	public var id: String
+	public var groupID: String
 	public var name: String
 	public var status: QueueItemStatus
 	public var score: Int
   public var link: String
 
-  init(key: Int64, guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String) {
+  init(key: Int64, guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String) {
 		self.key = key
 		self.guid = guid
-		self.id = id
+		self.groupID = groupID
 		self.name = name
 		self.status = status
 		self.score = score

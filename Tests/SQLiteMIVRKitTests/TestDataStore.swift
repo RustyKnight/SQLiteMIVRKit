@@ -23,11 +23,7 @@ class TestDataStore: XCTestCase {
 	}
 	
 	static func configure() throws {
-		#if os(OSX)
-			try SQLDataStore.configure(productName: "SQLiteMIVRKit", databaseName: "MIVR.db")
-		#else
-			try SQLDataStore.configure(databaseName: "MIVR.db")
-		#endif
+		try TestUtilities.setupDataStore()
 	}
 	
 	func testConfiguration() {
@@ -88,7 +84,8 @@ class TestDataStore: XCTestCase {
 				try dataStore.remove(entries)
 			}
 			
-			var history = try dataStore.addToHistory(guid: "1234", ignored: false, score: 1)
+			var history = try dataStore.addToHistory(groupID: "groupID", guid: "1234", ignored: false, score: 1)
+			assert(history.groupID == "groupID", "Invalid guide id, expecting 1234, got \(history.guid)")
 			assert(history.guid == "1234", "Invalid guide id, expecting 1234, got \(history.guid)")
 			assert(history.isIgnored == false, "Invalid guide name, expecting false, got \"\(history.isIgnored)\"")
 			assert(history.score == 1, "Invalid guide type, expecting 1, got \(history.score)")
@@ -123,22 +120,23 @@ class TestDataStore: XCTestCase {
 				try dataStore.remove(entries)
 			}
 			
-			var history = try dataStore.addToQueue(guid: "1234", id: "5678", name: "Test", status: .queued, score: 1)
+			var history = try dataStore.addToQueue(guid: "1234", groupID: "5678", name: "Test", status: .queued, score: 1, link: "link")
+			assert(history.link == "link", "Invalid guide id, expecting \"1234\", got \"\(history.guid)\"")
 			assert(history.guid == "1234", "Invalid guide id, expecting \"1234\", got \"\(history.guid)\"")
-			assert(history.id == "5678", "Invalid guide name, expecting \"5678\", got \"\(history.id)\"")
+			assert(history.groupID == "5678", "Invalid guide name, expecting \"5678\", got \"\(history.groupID)\"")
 			assert(history.name == "Test", "Invalid guide type, expecting \"Test\", got \"\(history.name)\"")
 			assert(history.status == .queued, "Invalid guide type, expecting \"\(QueueItemStatus.queued)\", got \"\(history.status)\"")
 			assert(history.score == 1, "Invalid guide type, expecting 1, got \(history.score)")
 			
 			history.guid = "5678"
-			history.id = "1234"
+			history.groupID = "1234"
 			history.name = "Testing"
 			history.status = .active
 			history.score = 100
 			
 			try dataStore.update(history)
 			assert(history.guid == "5678", "Invalid guide id, expecting \"5678\", got \"\(history.guid)\"")
-			assert(history.id == "1234", "Invalid guide name, expecting \"1234\", got \"\(history.id)\"")
+			assert(history.groupID == "1234", "Invalid guide name, expecting \"1234\", got \"\(history.groupID)\"")
 			assert(history.name == "Testing", "Invalid guide type, expecting \"Testing\", got \"\(history.name)\"")
 			assert(history.status == .active, "Invalid guide type, expecting \"\(QueueItemStatus.active)\", got \"\(history.status)\"")
 			assert(history.score == 100, "Invalid guide type, expecting 1, got \(history.score)")

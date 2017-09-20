@@ -20,7 +20,7 @@ class HistoryTable {
 	let guidColumn = Expression<String>("guid")
 	let ignoredColumn = Expression<Bool>("isgnored")
 	let scoreColumn = Expression<Int>("score")
-	
+
 	func create(using connection: Connection) throws {
 		try connection.run(table.create(ifNotExists: true) { (table) in
 			table.column(keyColumn, primaryKey: .autoincrement)

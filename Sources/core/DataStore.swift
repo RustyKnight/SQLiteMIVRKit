@@ -149,9 +149,9 @@ public class SQLDataStore: DefaultDataStore {
 		return try queueTable.select(using: try connection())
 	}
 
-  public override func addToQueue(guid: String, id: String, name: String, status: QueueItemStatus, score: Int, link: String) throws -> QueueItem {
+  public override func addToQueue(guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String) throws -> QueueItem {
 		let db = try connection()
-    return try queueTable.insert(guid: guid, id: id, name: name, status: status, score: score, link: link, using: db)
+    return try queueTable.insert(guid: guid, groupID: groupID, name: name, status: status, score: score, link: link, using: db)
 	}
 	
 	public override func remove(_ entries: [QueueItem]) throws {
