@@ -143,6 +143,14 @@ public class SQLDataStore: DefaultDataStore {
 		try historyTable.update(using: try connection(), entries: entries)
 	}
 	
+	public override func history(filteredByGUID filter: String) throws -> [HistoryItem] {
+		return try historyTable.select(using: try connection(), filteredByGUID: filter)
+	}
+	
+	public override func history(filteredByGroupID filter: String) throws -> [HistoryItem] {
+		return try historyTable.select(using: try connection(), filteredByGroupID: filter)
+	}
+	
 	// MARK: Queue Entries
 
 	public override func queue() throws -> [QueueItem] {
@@ -160,5 +168,9 @@ public class SQLDataStore: DefaultDataStore {
 	
 	public override func update(_ entries: [QueueItem]) throws {
 		try queueTable.update(using: try connection(), entries: entries)
+	}
+	
+	public override func queue(filteredByGroupID filter: String) throws -> [QueueItem] {
+		return try queueTable.select(using: try connection(), filteredByGroupID: filter)
 	}
 }

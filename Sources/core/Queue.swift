@@ -17,7 +17,7 @@ class QueueTable {
 	
 	let keyColumn = Expression<Int64>("key")
 	let guidColumn = Expression<String>("guid")
-	let idColumn = Expression<String>("id")
+	let groupIDColumn = Expression<String>("groupID")
 	let nameColumn = Expression<String>("name")
 	let statusColumn = Expression<Int>("status")
 	let scoreColumn = Expression<Int>("score")
@@ -27,7 +27,7 @@ class QueueTable {
 		try connection.run(table.create(ifNotExists: true) { (table) in
 			table.column(keyColumn, primaryKey: .autoincrement)
 			table.column(guidColumn, unique: true)
-			table.column(idColumn)
+			table.column(groupIDColumn)
 			table.column(nameColumn)
 			table.column(statusColumn)
 			table.column(scoreColumn)
@@ -35,14 +35,14 @@ class QueueTable {
 		})
 	}
 	
-  public func insert(guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String, using db: Connection) throws -> QueueItem {
+  func insert(guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String, using db: Connection) throws -> QueueItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert queue entry")
       
       let parameters = [
         self.guidColumn <- guid,
-        self.idColumn <- groupID,
+        self.groupIDColumn <- groupID,
         self.nameColumn <- name,
         self.statusColumn <- status.rawValue,
         self.scoreColumn <- score,
@@ -62,11 +62,11 @@ class QueueTable {
 		return value
 	}
 	
-	public func delete(using db: Connection, entries: QueueItem...) throws {
+	func delete(using db: Connection, entries: QueueItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 	
-	public func delete(using db: Connection, entries: [QueueItem]) throws {
+	func delete(using db: Connection, entries: [QueueItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let guide = entry as? SQLQueueItem else {
@@ -81,7 +81,7 @@ class QueueTable {
 		}
 	}
 	
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [QueueItem] {
+	func select(using db: Connection, filteredUsing filter: Table) throws -> [QueueItem] {
 		var entries: [QueueItem] = []
 		for entry in try db.prepare(filter) {
 			let statusValue = entry[statusColumn]
@@ -92,7 +92,7 @@ class QueueTable {
 				SQLQueueItem(
 					key: entry[keyColumn],
 					guid: entry[guidColumn],
-					groupID: entry[idColumn],
+					groupID: entry[groupIDColumn],
 					name: entry[nameColumn],
 					status: status,
 					score: entry[scoreColumn],
@@ -102,15 +102,20 @@ class QueueTable {
 		return entries
 	}
 	
-	public func select(using db: Connection) throws -> [QueueItem] {
+	func select(using db: Connection, filteredByGroupID filter: String) throws -> [QueueItem] {
+		let tableFilter = self.table.filter(self.groupIDColumn == filter)
+		return try select(using: db, filteredUsing: tableFilter)
+	}
+
+	func select(using db: Connection) throws -> [QueueItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 	
-	public func update(using db: Connection, entries: QueueItem...) throws {
+	func update(using db: Connection, entries: QueueItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [QueueItem]) throws {
+	func update(using db: Connection, entries: [QueueItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let mutabled = entry as? SQLQueueItem else {
@@ -120,7 +125,7 @@ class QueueTable {
 				let filter = self.table.filter(self.keyColumn == mutabled.key)
 				let parameters = [
 					self.guidColumn <- entry.guid,
-					self.idColumn <- entry.groupID,
+					self.groupIDColumn <- entry.groupID,
 					self.nameColumn <- entry.name,
 					self.statusColumn <- entry.status.rawValue,
 					self.scoreColumn <- entry.score,
@@ -136,15 +141,15 @@ class QueueTable {
 	
 }
 
-public class SQLQueueItem: QueueItem {
+class SQLQueueItem: QueueItem {
 
   var key: Int64
-	public var guid: String
-	public var groupID: String
-	public var name: String
-	public var status: QueueItemStatus
-	public var score: Int
-  public var link: String
+	var guid: String
+	var groupID: String
+	var name: String
+	var status: QueueItemStatus
+	var score: Int
+  var link: String
 
   init(key: Int64, guid: String, groupID: String, name: String, status: QueueItemStatus, score: Int, link: String) {
 		self.key = key

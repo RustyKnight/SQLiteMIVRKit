@@ -31,7 +31,7 @@ class GuideTable {
 		})
 	}
 
-	public func insert(name: String, id: String, type: GuideItemType, lastGrab: Date? = nil, using db: Connection) throws -> GuideItem {
+	func insert(name: String, id: String, type: GuideItemType, lastGrab: Date? = nil, using db: Connection) throws -> GuideItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert guide entry")
@@ -56,11 +56,11 @@ class GuideTable {
 		return value
 	}
 
-	public func delete(using db: Connection, entries: GuideItem...) throws {
+	func delete(using db: Connection, entries: GuideItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 
-	public func delete(using db: Connection, entries: [GuideItem]) throws {
+	func delete(using db: Connection, entries: [GuideItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let guide = entry as? SQLGuideItem else {
@@ -75,7 +75,7 @@ class GuideTable {
 		}
 	}
 
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [GuideItem] {
+	func select(using db: Connection, filteredUsing filter: Table) throws -> [GuideItem] {
 		var entries: [GuideItem] = []
 		for entry in try db.prepare(filter) {
 			guard let type = GuideItemType(rawValue: Int(entry[typeColumn])) else {
@@ -93,15 +93,15 @@ class GuideTable {
 		return entries
 	}
 
-	public func select(using db: Connection) throws -> [GuideItem] {
+	func select(using db: Connection) throws -> [GuideItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 
-	public func update(using db: Connection, entries: GuideItem...) throws {
+	func update(using db: Connection, entries: GuideItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [GuideItem]) throws {
+	func update(using db: Connection, entries: [GuideItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let mutabled = entry as? SQLGuideItem else {
@@ -125,13 +125,13 @@ class GuideTable {
 
 }
 
-public class SQLGuideItem: GuideItem {
+class SQLGuideItem: GuideItem {
 	
 	var key: Int64
-	public var name: String
-	public var id: String
-	public var type: GuideItemType
-	public var lastGrab: Date?
+	var name: String
+	var id: String
+	var type: GuideItemType
+	var lastGrab: Date?
 	
 	init(key: Int64, name: String, id: String, type: GuideItemType, lastGrab: Date? = nil) {
 		self.key = key

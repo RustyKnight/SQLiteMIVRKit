@@ -11,6 +11,7 @@
 		124E48A91F70DEEA0013EFC5 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124E48A81F70DEEA0013EFC5 /* History.swift */; };
 		1264A74E1F73265300017079 /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1264A74C1F73256A00017079 /* TestUtilities.swift */; };
 		1264A74F1F73265400017079 /* TestUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1264A74C1F73256A00017079 /* TestUtilities.swift */; };
+		1264A7511F73312400017079 /* TestPromiseChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1264A7501F73312400017079 /* TestPromiseChain.swift */; };
 		12A48A341F70A26000C068A0 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A2F1F70A26000C068A0 /* SQLite.framework */; };
 		12A48A351F70A26000C068A0 /* MIVRKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A301F70A26000C068A0 /* MIVRKit.framework */; };
 		12A48A361F70A26000C068A0 /* Hydra.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A48A311F70A26000C068A0 /* Hydra.framework */; };
@@ -56,6 +57,7 @@
 		121DE10B1F70EC0700CA4496 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		124E48A81F70DEEA0013EFC5 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		1264A74C1F73256A00017079 /* TestUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtilities.swift; sourceTree = "<group>"; };
+		1264A7501F73312400017079 /* TestPromiseChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPromiseChain.swift; sourceTree = "<group>"; };
 		12A48A2F1F70A26000C068A0 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/Mac/SQLite.framework; sourceTree = "<group>"; };
 		12A48A301F70A26000C068A0 /* MIVRKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MIVRKit.framework; path = Carthage/Build/Mac/MIVRKit.framework; sourceTree = "<group>"; };
 		12A48A311F70A26000C068A0 /* Hydra.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hydra.framework; path = Carthage/Build/Mac/Hydra.framework; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				8933C7891EB5B82A000D00A4 /* SQLiteMIVRKitTests.swift */,
 				12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */,
 				1264A74C1F73256A00017079 /* TestUtilities.swift */,
+				1264A7501F73312400017079 /* TestPromiseChain.swift */,
 			);
 			name = Tests;
 			path = Tests/SQLiteMIVRKitTests;
@@ -436,6 +439,7 @@
 				1264A74E1F73265300017079 /* TestUtilities.swift in Sources */,
 				8933C78F1EB5B82C000D00A4 /* SQLiteMIVRKitTests.swift in Sources */,
 				12A48A501F70AF9700C068A0 /* TestDataStore.swift in Sources */,
+				1264A7511F73312400017079 /* TestPromiseChain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

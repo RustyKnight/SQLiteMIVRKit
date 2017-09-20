@@ -31,7 +31,7 @@ class HistoryTable {
 		})
 	}
 	
-  public func insert(groupID: String, guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryItem {
+  func insert(groupID: String, guid: String, ignored: Bool, score: Int, using db: Connection) throws -> HistoryItem {
 		var rowID: Int64? = nil
 		try db.transaction {
 			log(debug: "Insert history entry")
@@ -52,11 +52,11 @@ class HistoryTable {
 		return value
 	}
 	
-	public func delete(using db: Connection, entries: HistoryItem...) throws {
+	func delete(using db: Connection, entries: HistoryItem...) throws {
 		try delete(using: db, entries: entries)
 	}
 	
-	public func delete(using db: Connection, entries: [HistoryItem]) throws {
+	func delete(using db: Connection, entries: [HistoryItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let guide = entry as? SQLHistoryItem else {
@@ -71,7 +71,17 @@ class HistoryTable {
 		}
 	}
 	
-	public func select(using db: Connection, filteredUsing filter: Table) throws -> [HistoryItem] {
+	func select(using db: Connection, filteredByGUID filter: String) throws -> [HistoryItem] {
+		let tableFilter = self.table.filter(self.guidColumn == filter)
+		return try select(using: db, filteredUsing: tableFilter)
+	}
+
+	func select(using db: Connection, filteredByGroupID filter: String) throws -> [HistoryItem] {
+		let tableFilter = self.table.filter(self.groupIDColumn == filter)
+		return try select(using: db, filteredUsing: tableFilter)
+	}
+
+	func select(using db: Connection, filteredUsing filter: Table) throws -> [HistoryItem] {
 		var entries: [HistoryItem] = []
 		for entry in try db.prepare(filter) {
 			entries.append(
@@ -86,15 +96,15 @@ class HistoryTable {
 		return entries
 	}
 	
-	public func select(using db: Connection) throws -> [HistoryItem] {
+	func select(using db: Connection) throws -> [HistoryItem] {
 		return try select(using: db, filteredUsing: table)
 	}
 	
-	public func update(using db: Connection, entries: HistoryItem...) throws {
+	func update(using db: Connection, entries: HistoryItem...) throws {
 		try update(using: db, entries: entries)
 	}
 	
-	public func update(using db: Connection, entries: [HistoryItem]) throws {
+	func update(using db: Connection, entries: [HistoryItem]) throws {
 		try db.transaction {
 			for entry in entries {
 				guard let mutabled = entry as? SQLHistoryItem else {
@@ -118,14 +128,14 @@ class HistoryTable {
 	
 }
 
-public class SQLHistoryItem: HistoryItem {
+class SQLHistoryItem: HistoryItem {
   
 	
 	var key: Int64
-  public var groupID: String
-	public var guid: String
-	public var isIgnored: Bool
-	public var score: Int
+  var groupID: String
+	var guid: String
+	var isIgnored: Bool
+	var score: Int
 	
   init(key: Int64, groupID: String, guid: String, ignored: Bool, score: Int) {
 		self.key = key
