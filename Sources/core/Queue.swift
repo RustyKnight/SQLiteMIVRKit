@@ -141,7 +141,7 @@ class QueueTable {
 	
 }
 
-class SQLQueueItem: QueueItem {
+class SQLQueueItem: QueueItem, CustomStringConvertible {
 
   var key: Int64
 	var guid: String
@@ -159,6 +159,10 @@ class SQLQueueItem: QueueItem {
 		self.status = status
 		self.score = score
     self.link = link
+	}
+	
+	var description: String {
+		return "[SQLQueueItem] key = \(key); guid = \(guid); groupID = \(groupID); name = \(name); status = \(status); score = \(score); link = \(link)"
 	}
 	
 }

@@ -21,4 +21,12 @@ struct TestUtilities {
 		#endif
 	}
 	
+	static func removeAllQueueItems() throws {
+		try DataStoreService.shared.remove(try DataStoreService.shared.queue())
+	}
+
+	static func removeAllHistoryItems() throws {
+		try DataStoreService.shared.remove(try DataStoreService.shared.history())
+	}
+
 }

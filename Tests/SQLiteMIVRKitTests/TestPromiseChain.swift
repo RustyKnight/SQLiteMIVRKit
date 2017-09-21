@@ -26,48 +26,108 @@ class TestPromiseChain: XCTestCase {
 	
 	func testTV() {
 		
-		var stopWatch = StopWatch()
-		stopWatch.isRunning = true
 		do {
 			try TestUtilities.setupDataStore()
+			try TestUtilities.removeAllHistoryItems()
+			try TestUtilities.removeAllQueueItems()
 
-			let exp = expectation(description: "NZB TV")
+			try tvPerformInitialGrab()
+			try tvPerformUpdateGrab()
 			
-			try MIVRFactory.grabTVSeries(
-				named: "Philip K. Dick's Electric Dreams",
-				withTVDBID: 329083,
-				withAPIKey: "952a3d058eb3db5fef69436419641c66",
-				fromURL: "https://api.nzbgeek.info/api").then { (queuedItems: [QueuedItems]) in
-					
-					var count: Int = 0
-					for items in queuedItems {
-						log(info: "Group.name \(items.group.name)")
-						log(info: "Group.id \(items.group.groupID)")
-						log(info: "  items.count \(items.items.count)")
-						count += items.items.count
-					}
-					
-					let queuedCount = try DataStoreService.shared.queue().count
-					
-					assert(count == queuedCount, "Expecting \(count) queued items, got \(queuedCount)")
-				}.always {
-					exp.fulfill()
-				}.catch { (error) -> (Void) in
-					XCTFail("\(error)")
-			}
-			
-			waitForExpectations(timeout: 3600.0, handler: { (error) in
-				guard let error = error else {
-					return
-				}
-				XCTFail("\(error)")
-			})
-			print("Completed in \(stopWatch)")
 		} catch let error {
 			XCTFail("\(error)")
 		}
 	}
 	
+	func tvPerformInitialGrab() throws {
+		var stopWatch = StopWatch()
+		stopWatch.isRunning = true
+		
+		let exp = expectation(description: "NZB TV")
+		
+		try MIVRFactory.grabTVSeries(
+			named: "Philip K. Dick's Electric Dreams",
+			withTVDBID: 329083,
+			withAPIKey: "952a3d058eb3db5fef69436419641c66",
+			fromURL: "https://api.nzbgeek.info/api").then { (queuedItems: [QueuedItems]) in
+				
+				var count: Int = 0
+				for items in queuedItems {
+					log(info: "   Group.name \(items.group.name)")
+					log(info: "Group.groupID \(items.group.groupID)")
+					log(info: "Group.guideID \(items.group.guideID)")
+					log(info: "  items.count \(items.items.count)")
+					count += items.items.count
+				}
+				
+				let queue = try DataStoreService.shared.queue()
+				let queuedCount = queue.count
+				queue.forEach({ (item) in
+					log(info: "\(item)")
+				})
+				
+				assert(count == queuedCount, "Expecting \(count) queued items, got \(queuedCount)")
+			}.always {
+				exp.fulfill()
+			}.catch { (error) -> (Void) in
+				XCTFail("\(error)")
+		}
+		
+		waitForExpectations(timeout: 3600.0, handler: { (error) in
+			guard let error = error else {
+				return
+			}
+			XCTFail("\(error)")
+		})
+		print("Completed in \(stopWatch)")
+
+	}
+	
+	func tvPerformUpdateGrab() throws {
+		var stopWatch = StopWatch()
+		stopWatch.isRunning = true
+		
+		let exp = expectation(description: "NZB TV")
+		
+		try MIVRFactory.grabTVSeries(
+			named: "Philip K. Dick's Electric Dreams",
+			withTVDBID: 329083,
+			withAPIKey: "952a3d058eb3db5fef69436419641c66",
+			fromURL: "https://api.nzbgeek.info/api").then { (queuedItems: [QueuedItems]) in
+				
+				var count: Int = 0
+				for items in queuedItems {
+					log(info: "Group.name \(items.group.name)")
+					log(info: "Group.id \(items.group.groupID)")
+					log(info: "  items.count \(items.items.count)")
+					count += items.items.count
+				}
+				
+				XCTAssert(count == 0, "Not expecting any new items - got \(count)")
+				
+//				let queue = try DataStoreService.shared.queue()
+//				let queuedCount = queue.count
+//				queue.forEach({ (item) in
+//					log(info: "\(item)")
+//				})
+//
+//				assert(count == queuedCount, "Expecting \(count) queued items, got \(queuedCount)")
+			}.always {
+				exp.fulfill()
+			}.catch { (error) -> (Void) in
+				XCTFail("\(error)")
+		}
+		
+		waitForExpectations(timeout: 3600.0, handler: { (error) in
+			guard let error = error else {
+				return
+			}
+			XCTFail("\(error)")
+		})
+		print("Completed in \(stopWatch)")
+		
+	}
+
 	func testMovie() {
 		//		var stopWatch = StopWatch()
 		//		stopWatch.isRunning = true

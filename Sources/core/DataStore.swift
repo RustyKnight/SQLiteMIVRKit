@@ -104,11 +104,21 @@ public class SQLDataStore: DefaultDataStore {
 		let connection = try self.connection()
 		try queueTable.create(using: connection)
 	}
+	
+	public override func withinTransactionDo(_ block: @escaping () throws -> Void) throws {
+		try connection().transaction {
+			try block()
+		}
+	}
 
 	// MARK: Guide Entries
 	
 	public override func guide() throws -> [GuideItem] {
 		return try guideTable.select(using: try connection())
+	}
+	
+	public override func guide(filteredByID filter: String) throws -> GuideItem? {
+		return try guideTable.select(using: try connection(), filteredByID: filter)
 	}
 	
 	public override func addToGuide(named: String, id: String, type: GuideItemType, lastGrab: Date?) throws -> GuideItem {

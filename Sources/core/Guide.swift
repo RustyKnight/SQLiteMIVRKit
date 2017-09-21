@@ -74,6 +74,11 @@ class GuideTable {
 			}
 		}
 	}
+	
+	func select(using connection: Connection, filteredByID filter: String) throws -> GuideItem? {
+		let tableFilter = self.table.filter(self.idColumn == filter)
+		return try select(using: connection, filteredUsing: tableFilter).first
+	}
 
 	func select(using db: Connection, filteredUsing filter: Table) throws -> [GuideItem] {
 		var entries: [GuideItem] = []
