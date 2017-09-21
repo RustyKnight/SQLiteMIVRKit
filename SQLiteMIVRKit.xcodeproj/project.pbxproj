@@ -28,6 +28,8 @@
 		12A48A4C1F70AECD00C068A0 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A441F70A29600C068A0 /* DataStore.swift */; };
 		12A48A501F70AF9700C068A0 /* TestDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */; };
 		12A48A6B1F70B7A200C068A0 /* TestDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A48A4F1F70AF9700C068A0 /* TestDataStore.swift */; };
+		12A67C101F73817800294552 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124E48A81F70DEEA0013EFC5 /* History.swift */; };
+		12A67C111F73817C00294552 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121DE10B1F70EC0700CA4496 /* Queue.swift */; };
 		52D6D9871BEFF229002C0205 /* SQLiteMIVRKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* SQLiteMIVRKit.framework */; };
 		8933C7851EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* SQLiteMIVRKit.swift */; };
 		8933C7861EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* SQLiteMIVRKit.swift */; };
@@ -404,8 +406,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12A67C111F73817C00294552 /* Queue.swift in Sources */,
 				8933C7851EB5B820000D00A4 /* SQLiteMIVRKit.swift in Sources */,
 				12A48A4C1F70AECD00C068A0 /* DataStore.swift in Sources */,
+				12A67C101F73817800294552 /* History.swift in Sources */,
 				12A48A481F70A35600C068A0 /* Guide.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
